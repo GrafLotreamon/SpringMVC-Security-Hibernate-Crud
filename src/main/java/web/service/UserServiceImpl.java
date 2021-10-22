@@ -20,17 +20,22 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
-        ;
+
     }
 
     public void addUser(User user) {
 
-            String p = user.getPassword();
+        String p = user.getPassword();
         user.setPassword(passwordEncoder.encode(p));
         userDao.addUser(user);
 
