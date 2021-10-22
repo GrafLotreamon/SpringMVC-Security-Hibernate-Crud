@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.model.Role;
 import web.model.User;
@@ -27,22 +28,16 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping(value = "/")
-    public String getHomePage(Model model) {
-        List<String> messages = new ArrayList<>();
-        messages.add("Hello!");
-        messages.add("I'm Spring MVC-SECURITY application");
-        messages.add("This is Root Page");
-        model.addAttribute("messages", messages);
-
-        return "helloPage";
-    }
 
     @GetMapping(value = "login")
     public String getLoginPage() {
         return "loginPage";
     }
 
+    @GetMapping(value = "/")
+    public String getDirstPage() {
+        return "loginPage";
+    }
 
     @GetMapping(value = "/admin")
     public String welcome() {
@@ -54,26 +49,6 @@ public class AdminController {
     public String allUsers(ModelMap model) {
         model.addAttribute("users", userService.getAllUsers());
         return "allUsersPage";
-    }
-
-    @GetMapping(value = "admin/add")
-    public String addUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "addUser";
-    }
-
-    @PostMapping(value = "admin/add")
-    public String postAddUser(@ModelAttribute("user") User user,
-                              @RequestParam(required = false) String roleAdmin) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRoleByName("ROLE_USER"));
-        if (roleAdmin != null && roleAdmin.equals("ROLE_ADMIN")) {
-            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
-        }
-        user.setRoles(roles);
-        userService.addUser(user);
-        return "redirect:/admin";
     }
 
 
@@ -90,7 +65,7 @@ public class AdminController {
         return "editUser";
     }
 
-    @PostMapping(value = "admin/edit")
+    @PatchMapping(value = "admin/edit")
     public String postEditUser(@ModelAttribute("user") User user,
                                @RequestParam(required = false) String roleAdmin) {
 
@@ -99,17 +74,37 @@ public class AdminController {
         if (roleAdmin != null && roleAdmin.equals("ROLE_ADMIN")) {
             roles.add(roleService.getRoleByName("ROLE_ADMIN"));
         }
-
         user.setRoles(roles);
-        userService.editUser(user);
-        return "redirect:/admin";
+        userService.update(user);
+        return "redirect:/admin/all";
     }
 
-    @GetMapping("admin/delete/{id}")
-    public String deleteUserById(@PathVariable("id") Long id) {
+
+    @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
 
+
+    @GetMapping(value = "/admin/add")
+    public String addUserAdmin(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "addUser";
+    }
+
+    @PostMapping(value = "/admin/add")
+    public String postAddUseradmin(@ModelAttribute("user") User user,
+                                   @RequestParam(required = false) String roleAdmin) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.getRoleByName("ROLE_USER"));
+        if (roleAdmin != null && roleAdmin.equals("ROLE_ADMIN")) {
+            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
+        }
+        user.setRoles(roles);
+        userService.addUser(user);
+        return "redirect:/admin/all";
+    }
 
 }

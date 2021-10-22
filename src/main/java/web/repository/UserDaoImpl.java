@@ -1,17 +1,21 @@
 package web.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import web.model.User;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
-import web.repository.UserDao;
 
 
 @Repository
 public class UserDaoImpl implements UserDao {
+
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -27,28 +31,24 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-    @Override
-    public void deleteUser(Long id) {
-
-        try {
-            User user = getEntityManager().find(User.class, id);
-            if (user != null) {
-                getEntityManager().remove(user);
-            }
-        } catch (NullPointerException e) {
-            System.out.println("User с указанным вами id не существует!");
-        }
+    public void delete(Long id) {
+        entityManager.remove(getUserById(id));
     }
 
-    @Override
-    public void editUser(User user) {
-        getEntityManager().merge(user);
+    public void update(User updatedUser) {
+        entityManager.merge(updatedUser);
     }
+
 
     @Override
     public User getUserById(Long id) {
-        return getEntityManager().find(User.class, id);
+        TypedQuery<User> q = entityManager.createQuery(
+                "select user from User user where user.id = :id", User.class
+        );
+        q.setParameter("id", id);
+        return q.getResultList().stream().findAny().orElse(null);
     }
+
 
     @Override
     public List<User> getAllUsers() {

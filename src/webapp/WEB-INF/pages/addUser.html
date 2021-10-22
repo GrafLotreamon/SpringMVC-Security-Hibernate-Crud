@@ -11,9 +11,7 @@
         <th:block th:include="menuPage">Menu</th:block>
     </div>
     <div>
-        <form th:action="@{add}"
-              th:object="${user}"
-              method="post">
+        <form th:action="@{add}" th:object="${user}" method="post">
             <fieldset>
                 <legend>Данные пользователя</legend>
                 <p>

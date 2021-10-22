@@ -3,10 +3,10 @@
     <form th:if="${#request.userPrincipal != null}" th:action="@{/logout}">
         <button type="submit">Выйти</button>
     </form>
-    <br/>
-    <form th:action="@{/admin/all}">
-        <button type="submit">Авторизоваться</button>
-    </form>
+    <!--    <br/>-->
+    <!--    <form th:action="@{/login}">-->
+    <!--        <button type="submit">Авторизоваться</button>-->
+    <!--    </form>-->
     <br/>
     <form th:action="@{/user/lk}">
         <button type="submit">ЛК</button>

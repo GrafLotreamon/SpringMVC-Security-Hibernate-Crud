@@ -41,19 +41,30 @@
                         <button type="submit">Изменить</button>
                     </form>
                 </td>
+
                 <td>
-                    <form th:action="@{delete/{id}(id=${user.getId()})}" th:object="${user}">
-                        <input type="hidden" name="id" th:value="${user.getId()}">
-                        <button type="submit">Удалить</button>
-                    </form>
+                    <!--                    <form th:method="DELETE" th:action="@{delete/{id}(id=${user.getId()})}" >-->
+                    <!--                        <input type="hidden" name="id" th:value="delete">-->
+                    <!--                      >Удалить</button>-->
+                    <!--                    </form>-->
+
                 </td>
+
+
             </tr>
             </tbody>
         </table>
         <form th:action="@{add}">
             <button type="submit">Добавить нового пользователя</button>
         </form>
+
+
     </div>
+    <form th:method="DELETE" th:each="user : ${users}" th:action="@{delete/{id}(id=${user.getId()})}">
+        <input type="hidden" name="_method" value="delete"/>
+        <input type="submit" value="Delete"/>
+
+    </form>
 </center>
 </body>
 </html>

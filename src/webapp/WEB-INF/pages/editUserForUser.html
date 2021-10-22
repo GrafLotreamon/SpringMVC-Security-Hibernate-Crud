@@ -10,7 +10,7 @@
 </div>
 <h2>Изменить пользователя</h2>
 <div>
-    <form th:action="@{/admin/edit}" th:object="${user}" th:method="PATCH">
+    <form th:action="@{/user/edit}" th:object="${user}" method="post">
         <input type="hidden" name="id" th:value="${user.getId()}">
         <fieldset>
             <legend>Данные пользователя</legend>
@@ -35,20 +35,13 @@
                     <input type="text" name="lastName" th:id="lastName" th:value="${user.getLastName()}">
                 </label>
                 <br/>
-                <label>
-                    <input type="checkbox"
-                           name="roleAdmin"
-                           th:checked="${roleAdmin}"
-                           th:value="ROLE_ADMIN"
-                           th:text="Администратор">
-                </label>
+                <
             </p>
         </fieldset>
         <button type="submit">Изменить данные</button>
     </form>
-
     <br/>
-    <form th:action="@{/admin/all}">
+    <form th:action="@{/user/lk}">
         <button type="submit">Назад к списку пользователей</button>
     </form>
 </div>
