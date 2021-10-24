@@ -49,8 +49,8 @@ public class UserServiceImpl implements UserService {
 
 
     public void update(User updatedUser) {
-//        String p = updatedUser.getPassword();
-//        updatedUser.setPassword(passwordEncoder.encode(p));
+        String p = updatedUser.getPassword();
+        updatedUser.setPassword(passwordEncoder.encode(p));
         userDao.update(updatedUser);
     }
 
