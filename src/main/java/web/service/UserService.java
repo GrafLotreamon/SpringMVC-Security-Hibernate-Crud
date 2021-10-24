@@ -6,11 +6,12 @@ import web.model.User;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
+
     void addUser(User user);
 
     void deleteUser(Long id);
 
-     void update(User updatedUser);
+    void update(User updatedUser);
 
     User getUserById(Long id);
 

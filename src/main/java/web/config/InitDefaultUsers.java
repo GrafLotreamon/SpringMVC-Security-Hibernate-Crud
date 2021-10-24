@@ -32,11 +32,11 @@ public class InitDefaultUsers {
         User useruser2 = new User("USER", "user", "2", "2", "2");
 
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRoleByName("ROLE_ADMIN"));
-        roles.add(roleService.getRoleByName("ROLE_USER"));
+        roles.add(roleService.getRoleByRole("ROLE_ADMIN"));
+        roles.add(roleService.getRoleByRole("ROLE_USER"));
 
         Set<Role> roles2 = new HashSet<>();
-        roles2.add(roleService.getRoleByName("ROLE_USER"));
+        roles2.add(roleService.getRoleByRole("ROLE_USER"));
 
         useruser.setRoles(roles);
         userService.addUser(useruser);

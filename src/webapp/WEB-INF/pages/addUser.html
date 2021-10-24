@@ -50,9 +50,9 @@
 
 
                     <label for="selectedRole">Select role: </label>
-                    <select id="selectedRole" name="selectedRole">
+                    <select multiple id="selectedRole" name="selectedRole">
 
-                        <option th:each="role : ${roles}" th:value="${role.getRole()}"
+                        <option th:each="role : ${roles}" th:value="${role.getId()}"
                                 th:text="${role}">
                         </option>
                     </select>

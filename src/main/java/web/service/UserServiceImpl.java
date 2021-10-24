@@ -19,26 +19,19 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
-
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Autowired
     public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
-
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void addUser(User user) {
 
+    public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.addUser(user);
-
-
     }
 
     @Override
@@ -46,10 +39,11 @@ public class UserServiceImpl implements UserService {
         userDao.delete(id);
     }
 
-
+    @Override
     public void update(User updatedUser) {
-        String p = updatedUser.getPassword();
-        updatedUser.setPassword(passwordEncoder.encode(p));
+        if (!updatedUser.getPassword().equals(getUserById(updatedUser.getId()).getPassword())) {
+            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
         userDao.update(updatedUser);
     }
 

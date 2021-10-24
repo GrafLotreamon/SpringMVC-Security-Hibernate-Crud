@@ -5,14 +5,12 @@ import web.model.Role;
 import java.util.List;
 
 public interface RoleService {
-    Role getRoleByName(String name);
+
+    Role getRoleByRole(String role);
 
     Role getRoleById(Long id);
 
     List<Role> allRoles();
 
-    Role getDefaultRole();
-
-
-    public void addRole(Role role);
+    void addRole(Role role);
 }

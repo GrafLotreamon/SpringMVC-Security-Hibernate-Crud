@@ -11,10 +11,7 @@ public interface RoleDao {
 
     List<Role> allRoles();
 
-    Role getDefaultRole();
-
-
-    public void addRole(Role role);
+     void addRole(Role role);
 }
 
 

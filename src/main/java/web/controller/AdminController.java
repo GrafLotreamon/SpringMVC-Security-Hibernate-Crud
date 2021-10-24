@@ -10,8 +10,6 @@ import web.model.User;
 import web.service.RoleService;
 import web.service.UserService;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +32,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/")
-    public String getDirstPage() {
+    public String getFirstPage() {
         return "loginPage";
     }
 
@@ -56,7 +54,7 @@ public class AdminController {
         User user = userService.getUserById(id);
         Set<Role> roles = user.getRoles();
         for (Role role : roles) {
-            if (role.equals(roleService.getRoleByName("ROLE_ADMIN"))) {
+            if (role.equals(roleService.getRoleByRole("ROLE_ADMIN"))) {
                 model.addAttribute("roleAdmin", true);
             }
         }
@@ -68,15 +66,20 @@ public class AdminController {
 
     @PatchMapping(value = "admin/edit")
     public String postEditUser(@ModelAttribute("user") User user,
-                               @RequestParam(required = false) String selectedRole) {
-
+                               @RequestParam(required = false) Long[] selectedRole) {
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRoleByName(selectedRole));
+        if (selectedRole != null) {
+            for (Long roleId : selectedRole) {
+                roles.add(roleService.getRoleById(roleId));
+            }
+        } else {
+            roles.add(roleService.getRoleByRole("ROLE_USER"));
+        }
         user.setRoles(roles);
         userService.update(user);
         return "redirect:/admin/all";
-    }
 
+    }
 
     @DeleteMapping(value = "/admin/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
@@ -96,14 +99,22 @@ public class AdminController {
 
     @PostMapping(value = "/admin/add")
     public String postAddUseradmin(@ModelAttribute("user") User user,
-                                   @RequestParam(required = false) String selectedRole) {
-
+                                   @RequestParam(required = false) Long[] selectedRole) {
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRoleByName(selectedRole));
+
+        if (selectedRole != null) {
+            for (Long roleId : selectedRole) {
+                roles.add(roleService.getRoleById(roleId));
+            }
+        } else {
+            roles.add(roleService.getRoleByRole("ROLE_USER"));
+        }
         user.setRoles(roles);
         userService.addUser(user);
         return "redirect:/admin/all";
     }
+
+
 }
 
 

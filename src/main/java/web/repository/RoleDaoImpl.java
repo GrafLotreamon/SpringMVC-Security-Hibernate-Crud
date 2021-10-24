@@ -2,15 +2,15 @@ package web.repository;
 
 import org.springframework.stereotype.Repository;
 import web.model.Role;
-import web.repository.RoleDao;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -18,18 +18,13 @@ public class RoleDaoImpl implements RoleDao {
         return this.entityManager;
     }
 
+
     @Override
     public Role getRoleByRole(String role) {
-        Role rolename = null;
-        try {
-            rolename = getEntityManager()
-                    .createQuery("SELECT r FROM Role r WHERE r.role=:role", Role.class)
-                    .setParameter("role", role)
-                    .getSingleResult();
-        } catch (Exception e) {
-            System.out.println("Роли с таким именем не существует!");
-        }
-        return rolename;
+        return getEntityManager()
+                .createQuery("select r from Role r where r.role = :role", Role.class)
+                .setParameter("role", role)
+                .getSingleResult();
     }
 
     @Override
@@ -45,15 +40,8 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public Role getDefaultRole() {
-        return getRoleByRole("ROLE_USER");
-    }
-
-
-    @Override
     public void addRole(Role role) {
         getEntityManager().persist(role);
     }
-
 
 }
