@@ -35,13 +35,13 @@
                     <input type="text" name="lastName" th:id="lastName" th:value="${user.getLastName()}">
                 </label>
                 <br/>
-                <label>
-                    <input type="checkbox"
-                           name="roleAdmin"
-                           th:checked="${roleAdmin}"
-                           th:value="ROLE_ADMIN"
-                           th:text="Администратор">
-                </label>
+                <label for="selectedRole">Select role: </label>
+                <select id="selectedRole" name="selectedRole">
+
+                    <option th:each="role : ${roles}" th:value="${role.getRole()}"
+                            th:text="${role}">
+                    </option>
+                </select>
             </p>
         </fieldset>
         <button type="submit">Изменить данные</button>

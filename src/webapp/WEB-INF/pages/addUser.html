@@ -52,7 +52,7 @@
                     <label for="selectedRole">Select role: </label>
                     <select id="selectedRole" name="selectedRole">
 
-                        <option th:checked="${roleAdmin}" th:each="role : ${roles}" th:value="${role.getRole()}"
+                        <option th:each="role : ${roles}" th:value="${role.getRole()}"
                                 th:text="${role}">
                         </option>
                     </select>

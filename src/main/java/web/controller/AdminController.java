@@ -61,25 +61,24 @@ public class AdminController {
             }
         }
         model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.allRoles());
+
         return "editUser";
     }
 
     @PatchMapping(value = "admin/edit")
     public String postEditUser(@ModelAttribute("user") User user,
-                               @RequestParam(required = false) String roleAdmin) {
+                               @RequestParam(required = false) String selectedRole) {
 
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRoleByName("ROLE_USER"));
-        if (roleAdmin != null && roleAdmin.equals("ROLE_ADMIN")) {
-            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
-        }
+        roles.add(roleService.getRoleByName(selectedRole));
         user.setRoles(roles);
         userService.update(user);
         return "redirect:/admin/all";
     }
 
 
-    @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/admin/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
