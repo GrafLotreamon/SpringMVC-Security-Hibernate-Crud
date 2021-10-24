@@ -39,18 +39,25 @@
                                th:id="firstName">
                     </label>
                     <br/>
+
+
                     <label th:for="lastName">Фамилия
                         <input type="text"
                                name="lastName"
                                th:id="lastName">
                     </label>
                     <br/>
-                    <label>
-                        <input type="checkbox"
-                               name="roleAdmin"
-                               th:value="ROLE_ADMIN"
-                               th:text="Администратор">
-                    </label>
+
+
+                    <label for="selectedRole">Select role: </label>
+                    <select id="selectedRole" name="selectedRole">
+
+                        <option th:checked="${roleAdmin}" th:each="role : ${roles}" th:value="${role.getRole()}"
+                                th:text="${role}">
+                        </option>
+                    </select>
+
+
                 </p>
             </fieldset>
             <button type="submit">Сохранить пользователя</button>

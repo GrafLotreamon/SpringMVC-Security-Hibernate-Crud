@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.model.Role;
 import web.model.User;
 import web.service.RoleService;
 import web.service.UserService;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -91,20 +90,21 @@ public class AdminController {
     public String addUserAdmin(Model model) {
         User user = new User();
         model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.allRoles());
+
         return "addUser";
     }
 
     @PostMapping(value = "/admin/add")
     public String postAddUseradmin(@ModelAttribute("user") User user,
-                                   @RequestParam(required = false) String roleAdmin) {
+                                   @RequestParam(required = false) String selectedRole) {
+
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRoleByName("ROLE_USER"));
-        if (roleAdmin != null && roleAdmin.equals("ROLE_ADMIN")) {
-            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
-        }
+        roles.add(roleService.getRoleByName(selectedRole));
         user.setRoles(roles);
         userService.addUser(user);
         return "redirect:/admin/all";
     }
-
 }
+
+

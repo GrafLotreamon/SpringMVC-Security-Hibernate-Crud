@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(PasswordEncoder passwordEncoder) {
@@ -28,15 +27,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
 
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void addUser(User user) {
 
-        String p = user.getPassword();
-        user.setPassword(passwordEncoder.encode(p));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.addUser(user);
 
 
@@ -49,8 +48,8 @@ public class UserServiceImpl implements UserService {
 
 
     public void update(User updatedUser) {
-//        String p = updatedUser.getPassword();
-//        updatedUser.setPassword(passwordEncoder.encode(p));
+        String p = updatedUser.getPassword();
+        updatedUser.setPassword(passwordEncoder.encode(p));
         userDao.update(updatedUser);
     }
 
